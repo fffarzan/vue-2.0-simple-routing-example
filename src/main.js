@@ -1,5 +1,6 @@
-import Vue from 'vue'
-import routes from './routes'
+import Vue from 'vue';
+import Routes from './routes';
+import NotFound from './pages/404.vue';
 
 const app = new Vue({
   el: '#app',
@@ -7,18 +8,11 @@ const app = new Vue({
     currentRoute: window.location.pathname
   },
   computed: {
-    ViewComponent () {
-      const matchingView = routes[this.currentRoute]
-      return matchingView
-        ? require('./pages/' + matchingView + '.vue')
-        : require('./pages/404.vue')
+    viewComponent() {
+      return Routes[this.currentRoute] || NotFound;
     }
   },
-  render (h) {
-    return h(this.ViewComponent)
+  render(h) {
+    return h(this.viewComponent);
   }
-})
-
-window.addEventListener('popstate', () => {
-  app.currentRoute = window.location.pathname
 })
